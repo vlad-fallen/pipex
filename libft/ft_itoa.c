@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbutter <mbutter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 16:05:46 by mbutter           #+#    #+#             */
-/*   Updated: 2021/10/08 17:04:52 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/13 16:57:53 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_get_len_itoa(long n)
+static int	ft_get_len_itoa(long n)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ int	ft_get_len_itoa(long n)
 	return (i);
 }
 
-void	ft_fill_str(char *str, long n, int len)
+static void	ft_fill_str(char *str, long n, int len)
 {
 	str[len] = '\0';
 	if (n < 0)

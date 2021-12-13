@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbutter <mbutter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 14:21:18 by mbutter           #+#    #+#             */
-/*   Updated: 2021/10/12 12:30:17 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/13 16:58:43 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_free_arr(char **arr, size_t max)
+static void	ft_free_arr(char **arr, size_t max)
 {
 	size_t	i;
 
@@ -26,7 +26,7 @@ void	ft_free_arr(char **arr, size_t max)
 	arr = NULL;
 }
 
-void	ft_do_split(char **arr, const char *s, char c)
+static void	ft_do_split(char **arr, const char *s, char c)
 {
 	size_t	i;
 	size_t	len;
@@ -54,7 +54,7 @@ void	ft_do_split(char **arr, const char *s, char c)
 	}
 }
 
-int	ft_get_count(const char *s, char c)
+static int	ft_get_count(const char *s, char c)
 {
 	size_t	word_count;
 	size_t	i;

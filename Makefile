@@ -6,11 +6,12 @@
 #    By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 15:40:50 by mbutter           #+#    #+#              #
-#    Updated: 2021/12/10 19:39:53 by mbutter          ###   ########.fr        #
+#    Updated: 2021/12/13 17:02:19 by mbutter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		=	pipex.c
+SRCS		=	pipex.c \
+				utils.c
 
 OBJS		=	$(SRCS:.c=.o)
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbutter <mbutter@student.42.fr>            +#+  +:+       +#+         #
+#    By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/06 15:42:55 by mbutter           #+#    #+#              #
-#    Updated: 2021/10/12 12:59:21 by mbutter          ###   ########.fr        #
+#    Updated: 2021/12/13 17:16:14 by mbutter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,10 @@ BONUS		=	ft_lstnew.c \
 
 BONUS_OBJS	=	$(BONUS:.c=.o)
 
+D_FILES		=	$(patsubst %.c,%.d,$(SRCS)) 
+
+D_FILES_B	=	$(patsubst %.c,%.d,$(BONUS))
+
 CC			=	gcc
 
 RM			=	rm -f
@@ -68,7 +72,7 @@ CFLAGS		=	-Wall -Wextra -Werror -I ./
 NAME		=	libft.a
 
 .c.o:
-			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -MD
 
 $(NAME):	$(OBJS)
 			ar rc $(NAME) $(OBJS)
@@ -77,7 +81,7 @@ $(NAME):	$(OBJS)
 all:		$(NAME)
 
 clean:
-			$(RM) $(OBJS) $(BONUS_OBJS)
+			$(RM) $(OBJS) $(BONUS_OBJS) $(D_FILES)
 
 fclean:		clean
 			$(RM) $(NAME)
@@ -89,3 +93,5 @@ bonus:		$(OBJS) $(BONUS_OBJS)
 			ranlib $(NAME)
 
 .PHONY:		all clean fclean re bonus
+
+include $(wildcard $(D_FILES))
