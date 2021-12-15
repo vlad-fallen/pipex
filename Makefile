@@ -6,7 +6,7 @@
 #    By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 15:40:50 by mbutter           #+#    #+#              #
-#    Updated: 2021/12/13 17:02:19 by mbutter          ###   ########.fr        #
+#    Updated: 2021/12/14 15:23:53 by mbutter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ SRCS		=	pipex.c \
 
 OBJS		=	$(SRCS:.c=.o)
 
-BONUS		=	
+BONUS		=	pipex_bonus.c \
+				utils.c
 
 BONUS_OBJS	=	$(BONUS:.c=.o)
 
@@ -42,7 +43,7 @@ $(NAME):	$(OBJS)
 all:		$(NAME)
 
 clean:
-			$(RM) $(OBJS) $(D_FILES) $(BONUS_OBJS)
+			$(RM) $(OBJS) $(D_FILES) $(BONUS_OBJS) $(D_FILES_B)
 			@make clean -C ./libft
 
 fclean:		clean
@@ -51,7 +52,9 @@ fclean:		clean
 
 re:			fclean $(NAME)
 
-bonus:
+bonus:		$(BONUS_OBJS)
+			@make -C ./libft
+			$(CC) $(CFLAGS) $(BONUS) ./libft/libft.a -o $(NAME)
 
 .PHONY:		all clean fclean re bonus
 

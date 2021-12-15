@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 16:56:32 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/13 17:26:20 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/15 14:57:04 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,25 @@ char	*find_path(char *cmd, char **envp)
 	}
 	arr_free(path_envp);
 	return (NULL);
+}
+
+int	get_next_line(char **line)
+{
+	int rd;
+	int i;
+	char *buf;
+
+	i = 0;
+	rd = 0;
+	buf = (char *)malloc(10000);
+	rd = read(0, &buf[i], 1);
+	while (rd && buf[i] != '\n')
+	{
+		i++;
+		rd = read(0, &buf[i], 1);
+	}
+	buf[++i] = '\0';
+	*line = buf;
+	free(buf);
+	return (rd);
 }
