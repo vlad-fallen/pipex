@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:02:41 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/16 19:26:38 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/16 20:11:37 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,13 @@ int	get_next_line(char **line)
 	return (rd);
 }
 
-void	exec_proc(int *fd_io, int argc, char **argv, char **envp)
+void	exec_proc(char *argv, char **envp)
 {
 	char	**arr;
 
-	dup2(fd_io[1], STDOUT_FILENO);
-	arr = ft_split(argv[argc - 2], ' ');
+	arr = ft_split(argv, ' ');
 	execve(find_path(arr[0], envp), arr, envp);
 	ft_putstr_fd("zsh: command not found: ", 2);
-	ft_putendl_fd(arr[argc - 2], 2);
+	ft_putendl_fd(arr[0], 2);
 	exit(EXIT_FAILURE);
 }

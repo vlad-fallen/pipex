@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 15:34:53 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/13 17:01:27 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/16 20:27:29 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,7 @@ int	main(int argc, char **argv, char **envp)
 			return (-1);
 		pipex(fd_in, fd_out, argv, envp);
 	}
+	else
+		ft_putstr_fd("Error with arguments\n", 2);
 	return (0);
 }
