@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:49:38 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/16 19:18:37 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/16 19:26:01 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	child_one(char *argv, char **envp)
 {
-	int fd[2];
-	int	pid1;
-	char **arr1;
+	int		fd[2];
+	int		pid1;
+	char	**arr1;
 
 	arr1 = ft_split(argv, ' ');
 	if (pipe(fd) == -1)
@@ -38,11 +38,11 @@ static void	child_one(char *argv, char **envp)
 	waitpid(pid1, NULL, 0);
 }
 
-static void here_doc(char **argv)
+static void	here_doc(char **argv)
 {
-	int fd[2];
-	int pid;
-	char *line;
+	int		fd[2];
+	int		pid;
+	char	*line;
 
 	if (pipe(fd) == -1)
 		return ;
@@ -52,9 +52,9 @@ static void here_doc(char **argv)
 	if (pid == 0)
 	{
 		close(fd[0]);
-		while(get_next_line(&line))
+		while (get_next_line(&line))
 		{
-			if(ft_strncmp(line, argv[2], ft_strlen(argv[2])) == 0)
+			if (ft_strncmp(line, argv[2], ft_strlen(argv[2])) == 0)
 				exit(EXIT_SUCCESS);
 			write(fd[1], line, ft_strlen(line));
 		}
@@ -69,8 +69,8 @@ static void here_doc(char **argv)
 
 int	main(int argc, char **argv, char **envp)
 {
-	int		fd_io[2];
-	int i;
+	int	fd_io[2];
+	int	i;
 
 	if (argc >= 5)
 	{
@@ -86,7 +86,6 @@ int	main(int argc, char **argv, char **envp)
 			fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 			if (fd_io[0] < 0 || fd_io[1] < 0)
 				return (-1);
-			//pipex(fd_io, argc, argv, envp);
 			i = 2;
 			dup2(fd_io[0], STDIN_FILENO);
 		}
@@ -96,4 +95,3 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
-
