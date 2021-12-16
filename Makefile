@@ -6,7 +6,7 @@
 #    By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 15:40:50 by mbutter           #+#    #+#              #
-#    Updated: 2021/12/14 15:23:53 by mbutter          ###   ########.fr        #
+#    Updated: 2021/12/16 19:05:20 by mbutter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCS		=	pipex.c \
 OBJS		=	$(SRCS:.c=.o)
 
 BONUS		=	pipex_bonus.c \
-				utils.c
+				utils_bonus.c
 
 BONUS_OBJS	=	$(BONUS:.c=.o)
 

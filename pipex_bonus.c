@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:49:38 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/15 15:33:26 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/16 19:18:37 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,11 @@ static void	child_one(char *argv, char **envp)
 	waitpid(pid1, NULL, 0);
 }
 
-static void here_doc(int *fd_io, int argc, char **argv, char **envp)
+static void here_doc(char **argv)
 {
 	int fd[2];
 	int pid;
 	char *line;
-	int i;
-	char **arr;
 
 	if (pipe(fd) == -1)
 		return ;
@@ -67,48 +65,20 @@ static void here_doc(int *fd_io, int argc, char **argv, char **envp)
 		dup2(fd[0], STDIN_FILENO);
 		wait(NULL);
 	}
-	i = 3;
-	while (i < argc - 2)
-	{
-		child_one(argv[i++], envp);
-	}
-	dup2(fd_io[1], STDOUT_FILENO);
-	arr = ft_split(argv[argc - 2], ' ');
-	execve(find_path(arr[0], envp), arr, envp);
-	ft_putstr_fd("zsh: command not found: ", 2);
-	ft_putendl_fd(arr[argc - 2], 2);
-	exit(EXIT_FAILURE);
-}
-
-static void	pipex(int *fd_io, int argc, char **argv, char **envp)
-{
-	int i;
-	char **arr;
-	
-	i = 2;
-	dup2(fd_io[0], STDIN_FILENO);
-	while (i < argc - 2)
-	{
-		child_one(argv[i++], envp);
-	}
-	dup2(fd_io[1], STDOUT_FILENO);
-	arr = ft_split(argv[argc - 2], ' ');
-	execve(find_path(arr[0], envp), arr, envp);
-	ft_putstr_fd("zsh: command not found: ", 2);
-	ft_putendl_fd(arr[argc - 2], 2);
-	exit(EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	int		fd_io[2];
+	int i;
 
 	if (argc >= 5)
 	{
 		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
 		{
 			fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
-			here_doc(fd_io, argc, argv, envp);
+			here_doc(argv);
+			i = 3;
 		}
 		else
 		{
@@ -116,8 +86,13 @@ int	main(int argc, char **argv, char **envp)
 			fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 			if (fd_io[0] < 0 || fd_io[1] < 0)
 				return (-1);
-			pipex(fd_io, argc, argv, envp);
+			//pipex(fd_io, argc, argv, envp);
+			i = 2;
+			dup2(fd_io[0], STDIN_FILENO);
 		}
+		while (i < argc - 2)
+			child_one(argv[i++], envp);
+		exec_proc(fd_io, argc, argv, envp);
 	}
 	return (0);
 }

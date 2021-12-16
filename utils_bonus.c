@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/13 16:56:32 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/16 19:03:30 by mbutter          ###   ########.fr       */
+/*   Created: 2021/12/16 19:02:41 by mbutter           #+#    #+#             */
+/*   Updated: 2021/12/16 19:13:30 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 void	arr_free(char **arr)
 {
@@ -52,4 +52,37 @@ char	*find_path(char *cmd, char **envp)
 	}
 	arr_free(path_envp);
 	return (NULL);
+}
+
+int	get_next_line(char **line)
+{
+	int rd;
+	int i;
+	char *buf;
+
+	i = 0;
+	rd = 0;
+	buf = (char *)malloc(10000);
+	rd = read(0, &buf[i], 1);
+	while (rd && buf[i] != '\n')
+	{
+		i++;
+		rd = read(0, &buf[i], 1);
+	}
+	buf[++i] = '\0';
+	*line = buf;
+	free(buf);
+	return (rd);
+}
+
+void exec_proc(int *fd_io, int argc, char **argv, char **envp)
+{
+	char **arr;
+
+	dup2(fd_io[1], STDOUT_FILENO);
+	arr = ft_split(argv[argc - 2], ' ');
+	execve(find_path(arr[0], envp), arr, envp);
+	ft_putstr_fd("zsh: command not found: ", 2);
+	ft_putendl_fd(arr[argc - 2], 2);
+	exit(EXIT_FAILURE);
 }
