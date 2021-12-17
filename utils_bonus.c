@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:02:41 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/16 20:11:37 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/17 18:41:52 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,28 @@ void	exec_proc(char *argv, char **envp)
 	ft_putstr_fd("zsh: command not found: ", 2);
 	ft_putendl_fd(arr[0], 2);
 	exit(EXIT_FAILURE);
+}
+
+void	open_fd(char **argv, int *fd_io, int argc, int i)
+{
+	if (i == 0)
+	{
+		fd_io[0] = open(argv[1], O_RDONLY);
+		fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		dup2(fd_io[0], STDIN_FILENO);
+		if (fd_io[0] < 0 || fd_io[1] < 0)
+		{
+			ft_putstr_fd("Error with open files\n", 2);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (i == 1)
+	{
+		fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+		if (fd_io[1] < 0)
+		{
+			ft_putstr_fd("Error with open files\n", 2);
+			exit(EXIT_FAILURE);
+		}
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:49:38 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/16 20:37:55 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/17 18:45:32 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 static void	child_one(char *argv, char **envp)
 {
 	int		fd[2];
-	int		pid1;
+	int		pid;
 
 	if (pipe(fd) == -1)
 		return ;
-	pid1 = fork();
-	if (pid1 < 0)
+	pid = fork();
+	if (pid < 0)
 		return ;
-	if (pid1 == 0)
+	if (pid == 0)
 	{
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
@@ -30,16 +30,15 @@ static void	child_one(char *argv, char **envp)
 	}
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[1]);
-	waitpid(pid1, NULL, 0);
+	waitpid(pid, NULL, 0);
 }
 
-static void	here_doc(char **argv, int *fd_io, int argc)
+static void	here_doc(char **argv)
 {
 	int		fd[2];
 	int		pid;
 	char	*line;
 
-	fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (pipe(fd) == -1)
 		return ;
 	pid = fork();
@@ -55,16 +54,9 @@ static void	here_doc(char **argv, int *fd_io, int argc)
 			write(fd[1], line, ft_strlen(line));
 		}
 	}
-	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
-	wait(NULL);
-}
-
-static void	pipex(int *fd_io, int argc, char **argv)
-{
-	fd_io[0] = open(argv[1], O_RDONLY);
-	fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	dup2(fd_io[0], STDIN_FILENO);
+	close(fd[1]);
+	waitpid(pid, NULL, 0);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -76,14 +68,13 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
 		{
-			here_doc(argv, fd_io, argc);
+			here_doc(argv);
+			open_fd(argv, fd_io, argc, 1);
 			i = 3;
 		}
 		else
 		{
-			pipex(fd_io, argc, argv);
-			if (fd_io[0] < 0 || fd_io[1] < 0)
-				return (-1);
+			open_fd(argv, fd_io, argc, 0);
 			i = 2;
 		}
 		while (i < argc - 2)
