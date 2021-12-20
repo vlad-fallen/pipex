@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:02:41 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/18 14:03:09 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/20 12:43:57 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,7 @@ void	exec_proc(char *argv, char **envp)
 	{
 		path = cmd[0];
 		if (access(path, F_OK) == 0)
-		{
 			execve(path, cmd, envp);
-		}
 		else
 		{
 			ft_putstr_fd("zsh: command not found: ", 2);
