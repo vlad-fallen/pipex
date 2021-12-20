@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:49:38 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/17 18:45:32 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/18 14:41:14 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ static void	here_doc(char **argv)
 	waitpid(pid, NULL, 0);
 }
 
+static void	err_arg(void)
+{
+	ft_putstr_fd("Error with arguments\n", 2);
+	exit(EXIT_FAILURE);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	int	fd_io[2];
@@ -83,6 +89,6 @@ int	main(int argc, char **argv, char **envp)
 		exec_proc(argv[argc - 2], envp);
 	}
 	else
-		ft_putstr_fd("Error with arguments\n", 2);
+		err_arg();
 	return (0);
 }

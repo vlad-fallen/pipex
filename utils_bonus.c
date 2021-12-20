@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:02:41 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/17 18:41:52 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/18 14:03:09 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,32 @@ int	get_next_line(char **line)
 
 void	exec_proc(char *argv, char **envp)
 {
-	char	**arr;
+	char	**cmd;
+	char	*path;
 
-	arr = ft_split(argv, ' ');
-	execve(find_path(arr[0], envp), arr, envp);
-	ft_putstr_fd("zsh: command not found: ", 2);
-	ft_putendl_fd(arr[0], 2);
-	exit(EXIT_FAILURE);
+	cmd = ft_split(argv, ' ');
+	if (!ft_strchr(cmd[0], '/'))
+	{
+		path = find_path(cmd[0], envp);
+		execve(path, cmd, envp);
+		ft_putstr_fd("zsh: command not found: ", 2);
+		ft_putendl_fd(cmd[0], 2);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		path = cmd[0];
+		if (access(path, F_OK) == 0)
+		{
+			execve(path, cmd, envp);
+		}
+		else
+		{
+			ft_putstr_fd("zsh: command not found: ", 2);
+			ft_putendl_fd(cmd[0], 2);
+			exit(EXIT_FAILURE);
+		}
+	}
 }
 
 void	open_fd(char **argv, int *fd_io, int argc, int i)
