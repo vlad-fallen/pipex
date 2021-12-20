@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 16:56:32 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/16 19:03:30 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/20 16:00:33 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,21 @@ char	*find_path(char *cmd, char **envp)
 	}
 	arr_free(path_envp);
 	return (NULL);
+}
+
+void	err_arg(int i)
+{
+	if (i == 0)
+		ft_putstr_fd("Error with arguments\n", 2);
+	else if (i == 1)
+		ft_putstr_fd("Error with open files\n", 2);
+	else if (i == 2)
+		ft_putstr_fd("Error with command\n", 2);
+	else if (i == 3)
+		ft_putstr_fd("Error with pipe\n", 2);
+	else if (i == 4)
+		ft_putstr_fd("Error with command\n", 2);
+	else if (i == 5)
+		ft_putstr_fd("Error with duplicate\n", 2);
+	exit(EXIT_FAILURE);
 }
