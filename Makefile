@@ -6,14 +6,14 @@
 #    By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 15:40:50 by mbutter           #+#    #+#              #
-#    Updated: 2022/01/14 14:55:06 by mbutter          ###   ########.fr        #
+#    Updated: 2022/01/14 15:03:54 by mbutter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS		=	pipex.c \
 				utils.c
 
-OBJS		=	$(SRCS:.c=.o)
+OBJS		=	$(patsubst %.c,%.o,$(SRCS)) 
 
 BONUS		=	pipex_bonus.c \
 				utils_bonus.c
@@ -21,8 +21,6 @@ BONUS		=	pipex_bonus.c \
 BONUS_OBJS	=	$(patsubst %.c,%.o,$(BONUS))
 
 D_FILES		=	$(patsubst %.c,%.d,$(SRCS) $(BONUS)) 
-
-#D_FILES_B	=	$(patsubst %.c,%.d,)
 
 CC			=	gcc
 
@@ -60,4 +58,3 @@ bonus:		$(BONUS_OBJS)
 .PHONY:		all clean fclean re bonus
 
 include $(wildcard $(D_FILES))
-#include $(wildcard $(D_FILES_B))
