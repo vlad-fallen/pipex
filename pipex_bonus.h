@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 15:25:02 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/17 18:42:07 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/20 17:31:30 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 char	*find_path(char *cmd, char **envp);
 void	arr_free(char **arr);
 int		get_next_line(char **line);
-void	exec_proc(char *argv, char **envp);
-void	open_fd(char **argv, int *fd_io, int argc, int i);
+void	exec_proc(char **argv, char **envp);
+void	err_arg(int i);
 
 #endif

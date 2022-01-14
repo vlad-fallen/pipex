@@ -6,7 +6,7 @@
 /*   By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:02:41 by mbutter           #+#    #+#             */
-/*   Updated: 2021/12/20 12:43:57 by mbutter          ###   ########.fr       */
+/*   Updated: 2021/12/20 17:31:15 by mbutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,54 +75,39 @@ int	get_next_line(char **line)
 	return (rd);
 }
 
-void	exec_proc(char *argv, char **envp)
+void	err_arg(int i)
 {
-	char	**cmd;
+	if (i == 0)
+		ft_putstr_fd("Error with arguments\n", 2);
+	else if (i == 1)
+		ft_putstr_fd("Error with open files\n", 2);
+	else if (i == 2)
+		ft_putstr_fd("Error with command\n", 2);
+	else if (i == 3)
+		ft_putstr_fd("Error with pipe\n", 2);
+	else if (i == 4)
+		ft_putstr_fd("Error with fork\n", 2);
+	else if (i == 5)
+		ft_putstr_fd("Error with duplicate\n", 2);
+	exit(EXIT_FAILURE);
+}
+
+void	exec_proc(char **cmd, char **envp)
+{
 	char	*path;
 
-	cmd = ft_split(argv, ' ');
 	if (!ft_strchr(cmd[0], '/'))
 	{
 		path = find_path(cmd[0], envp);
 		execve(path, cmd, envp);
-		ft_putstr_fd("zsh: command not found: ", 2);
-		ft_putendl_fd(cmd[0], 2);
-		exit(EXIT_FAILURE);
 	}
 	else
 	{
 		path = cmd[0];
 		if (access(path, F_OK) == 0)
 			execve(path, cmd, envp);
-		else
-		{
-			ft_putstr_fd("zsh: command not found: ", 2);
-			ft_putendl_fd(cmd[0], 2);
-			exit(EXIT_FAILURE);
-		}
 	}
-}
-
-void	open_fd(char **argv, int *fd_io, int argc, int i)
-{
-	if (i == 0)
-	{
-		fd_io[0] = open(argv[1], O_RDONLY);
-		fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-		dup2(fd_io[0], STDIN_FILENO);
-		if (fd_io[0] < 0 || fd_io[1] < 0)
-		{
-			ft_putstr_fd("Error with open files\n", 2);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else if (i == 1)
-	{
-		fd_io[1] = open(argv[argc - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
-		if (fd_io[1] < 0)
-		{
-			ft_putstr_fd("Error with open files\n", 2);
-			exit(EXIT_FAILURE);
-		}
-	}
+	ft_putstr_fd("zsh: command not found: ", 2);
+	ft_putendl_fd(cmd[0], 2);
+	exit(EXIT_FAILURE);
 }
