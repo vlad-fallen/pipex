@@ -6,7 +6,7 @@
 #    By: mbutter <mbutter@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 15:40:50 by mbutter           #+#    #+#              #
-#    Updated: 2021/12/16 19:05:20 by mbutter          ###   ########.fr        #
+#    Updated: 2022/01/14 14:55:06 by mbutter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,27 +18,27 @@ OBJS		=	$(SRCS:.c=.o)
 BONUS		=	pipex_bonus.c \
 				utils_bonus.c
 
-BONUS_OBJS	=	$(BONUS:.c=.o)
+BONUS_OBJS	=	$(patsubst %.c,%.o,$(BONUS))
 
-D_FILES		=	$(patsubst %.c,%.d,$(SRCS)) 
+D_FILES		=	$(patsubst %.c,%.d,$(SRCS) $(BONUS)) 
 
-D_FILES_B	=	$(patsubst %.c,%.d,$(BONUS))
+#D_FILES_B	=	$(patsubst %.c,%.d,)
 
 CC			=	gcc
 
 RM			=	rm -f
 
-CFLAGS		=	-Wall -Wextra -Werror -I ./
+CFLAGS		=	-Wall -Wextra -Werror
 
 NAME		=	pipex
 
 
-.c.o:
-			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -MD
+%.o:		%.c
+			$(CC) $(CFLAGS) -c $< -o $@ -MMD
 
 $(NAME):	$(OBJS)
 			@make -C ./libft
-			$(CC) $(CFLAGS) $(SRCS) ./libft/libft.a -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
 
 all:		$(NAME)
 
@@ -54,8 +54,10 @@ re:			fclean $(NAME)
 
 bonus:		$(BONUS_OBJS)
 			@make -C ./libft
-			$(CC) $(CFLAGS) $(BONUS) ./libft/libft.a -o $(NAME)
+			$(CC) $(CFLAGS) $(BONUS_OBJS) ./libft/libft.a -o $(NAME)
+
 
 .PHONY:		all clean fclean re bonus
 
 include $(wildcard $(D_FILES))
+#include $(wildcard $(D_FILES_B))
